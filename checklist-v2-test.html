@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>가평 숲속의정원 준비물 (테스트·비공개)</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>
+  :root{
+    --bg:#efe6d6; --surface:#fbf8f1; --surface-2:#f4eee0;
+    --ink:#2e2a22; --ink-soft:#726a5a;
+    --moss:#3f6b4a; --moss-soft:#dce6d9;
+    --rose:#b85c6b; --rose-soft:#f3dfe2;
+    --denim:#3e5c76; --denim-soft:#dde6ec;
+    --ochre:#a97a1f; --ochre-soft:#f0e2c4;
+    --line: rgba(46,42,34,0.13);
+    --shadow: 0 1px 2px rgba(46,42,34,0.06), 0 6px 20px rgba(46,42,34,0.07);
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+  body{margin:0; font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;}
+
+  /* GATE */
+  #gate{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px;background:var(--bg);}
+  .gatecard{background:var(--surface);border-radius:22px;padding:38px 30px;max-width:380px;width:100%;text-align:center;
+    box-shadow:0 24px 60px -30px rgba(46,42,34,.35); border:1px solid var(--line);}
+  .lock{font-size:44px}
+  .gatecard h2{font-size:22px;font-weight:800;margin-top:10px;color:var(--ink);}
+  .gatecard p{font-size:14px;color:var(--ink-soft);margin-top:8px;line-height:1.5;}
+  .pin{width:100%;margin-top:20px;padding:15px;font-size:22px;text-align:center;letter-spacing:8px;
+    border:2px solid var(--line);border-radius:14px;outline:none;font-weight:800;color:var(--ink);background:var(--surface-2);}
+  .pin:focus{border-color:var(--moss);}
+  .gbtn{width:100%;margin-top:12px;padding:15px;font-size:17px;font-weight:800;color:#fff;border:none;
+    border-radius:14px;background:var(--moss);cursor:pointer;font-family:inherit;}
+  .gbtn:active{opacity:.85;}
+  .err{color:#c0564f;font-size:14px;margin-top:12px;font-weight:700;min-height:18px;}
+
+  /* APP */
+  #app{display:none;}
+  .wrap{
+    background:var(--bg); min-height:100vh; display:flex; justify-content:center;
+    padding:28px 14px 60px; color:var(--ink);
+  }
+  .card-col{ width:100%; max-width:440px; }
+  .masthead{ text-align:center; margin-bottom:18px; }
+  .eyebrow{ font-size:12px; letter-spacing:.12em; text-transform:uppercase; color:var(--ink-soft); font-weight:600; }
+  h1{ font-family:Iowan Old Style,"Palatino Linotype","Book Antiqua",Georgia,serif;
+    font-size:26px; line-height:1.2; margin:6px 0 4px; text-wrap:balance; font-weight:600; }
+  .sub{ font-size:13.5px; color:var(--ink-soft); margin:0; }
+  .progress-bar-track{ margin-top:16px; height:8px; border-radius:99px; background:var(--surface-2);
+    overflow:hidden; border:1px solid var(--line); }
+  .progress-bar-fill{ height:100%; background:var(--moss); border-radius:99px; transition:width .25s ease; }
+  .progress-row{ display:flex; justify-content:space-between; align-items:baseline; margin-top:8px; }
+  .progress-count{ font-variant-numeric:tabular-nums; font-size:13px; color:var(--ink-soft); }
+  .reset-btn{ background:none; border:none; color:var(--ink-soft); font-size:12.5px; text-decoration:underline;
+    text-underline-offset:2px; cursor:pointer; padding:0; font-family:inherit; }
+  .reset-btn:hover{ color:var(--ink); }
+  .card{ background:var(--surface); border:1px solid var(--line); border-radius:14px;
+    margin-top:16px; box-shadow:var(--shadow); overflow:hidden; }
+  .card-head{ display:flex; align-items:center; justify-content:space-between;
+    padding:13px 16px 11px; border-bottom:1px solid var(--line); }
+  .card-title{ display:flex; align-items:center; gap:8px; font-size:15.5px; font-weight:700; }
+  .card-title .ic{ font-size:16px; }
+  .card-count{ font-size:12.5px; color:var(--ink-soft); font-variant-numeric:tabular-nums; }
+  .item{ display:flex; align-items:center; gap:12px; padding:12px 16px; border-top:1px solid var(--line); }
+  .item:first-of-type{ border-top:none; }
+  .cbox-btn{ width:22px; height:22px; border-radius:7px; border:1.6px solid var(--ink-soft);
+    background:var(--surface); flex:0 0 auto; cursor:pointer; padding:0;
+    display:flex; align-items:center; justify-content:center; transition:all .15s ease; }
+  .cbox-btn svg{ width:13px; height:13px; stroke:var(--surface); stroke-width:3; fill:none;
+    stroke-linecap:round; stroke-linejoin:round; stroke-dasharray:20; stroke-dashoffset:20; transition:stroke-dashoffset .18s ease; }
+  .item.done .cbox-btn{ background:var(--moss); border-color:var(--moss); }
+  .item.done .cbox-btn svg{ stroke-dashoffset:0; }
+  .label{ flex:1 1 auto; font-size:15px; line-height:1.35; transition:color .15s ease; }
+  .item.done .label{ color:var(--ink-soft); text-decoration:line-through; text-decoration-color:var(--line); }
+  .owner-btn{ flex:0 0 auto; border:1px dashed var(--line); background:none; cursor:pointer;
+    font-family:inherit; font-size:12px; font-weight:600; padding:5px 10px; border-radius:99px;
+    color:var(--ink-soft); white-space:nowrap; transition:all .12s ease; }
+  .owner-btn[data-owner="denim"]{ border-style:solid; border-color:transparent; background:var(--denim-soft); color:var(--denim); }
+  .owner-btn[data-owner="rose"]{ border-style:solid; border-color:transparent; background:var(--rose-soft); color:var(--rose); }
+  .owner-btn[data-owner="ochre"]{ border-style:solid; border-color:transparent; background:var(--ochre-soft); color:var(--ochre); }
+  .foot-note{ text-align:center; margin-top:22px; font-size:12px; color:var(--ink-soft); line-height:1.6; }
+  .foot-note b{ color:var(--ink); }
+</style>
+</head>
+<body>
+
+<div id="gate">
+  <div class="gatecard">
+    <div class="lock">🔒</div>
+    <h2>두 분의 여행 준비물</h2>
+    <p>비밀번호를 입력하세요.<br>(두 분만 아는 네 자리)</p>
+    <input class="pin" id="pin" type="tel" inputmode="numeric" maxlength="8" placeholder="••••" autocomplete="off">
+    <button class="gbtn" id="go">열기</button>
+    <div class="err" id="err"></div>
+  </div>
+</div>
+
+<div id="app">
+  <div class="wrap">
+    <div class="card-col">
+      <div class="masthead">
+        <div class="eyebrow">신버전 테스트 · 마스터 포맷 적용</div>
+        <h1>가평 숲속의정원 준비물</h1>
+        <p class="sub">1박2일 · 7/16(목)–7/17(금) · 물놀이형 포함</p>
+        <div class="progress-bar-track"><div class="progress-bar-fill" id="pbar" style="width:0%"></div></div>
+        <div class="progress-row">
+          <span class="progress-count" id="pcount">0 / 0 완료</span>
+          <button class="reset-btn" id="resetBtn">전체 초기화</button>
+        </div>
+      </div>
+      <div id="list"></div>
+      <p class="foot-note">
+        항목을 누르면 완료 체크, 담당 배지를 누르면 <b>빈칸 → 주인님 → 여왕님 → 공용</b> 순서로 바뀝니다.<br>
+        다음 여행부터는 이 마스터 + 그 여행 유형에 맞는 항목만 얹어서 새로 만듭니다.
+      </p>
+    </div>
+  </div>
+</div>
+
+<script>
+const HASH="e0214fd53e647db3a7b551912cfdf2d87a1a95f70c5529a218bffad54b8cb278";
+const SALT="-soop-jipsa";
+async function sha(t){const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(t));
+  return [...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('');}
+const gate=document.getElementById("gate"), app=document.getElementById("app");
+function unlock(){ gate.style.display="none"; app.style.display="block"; render(); }
+async function tryPin(){
+  const v=document.getElementById("pin").value.trim();
+  const h=await sha(v+SALT);
+  if(h===HASH){ try{sessionStorage.setItem("soop_ok","1");}catch(e){} unlock(); }
+  else { document.getElementById("err").textContent="비밀번호가 맞지 않습니다."; }
+}
+document.getElementById("go").addEventListener("click",tryPin);
+document.getElementById("pin").addEventListener("keydown",e=>{ if(e.key==="Enter") tryPin(); });
+try{ if(sessionStorage.getItem("soop_ok")==="1") unlock(); }catch(e){}
+
+(function(){
+  var DATA = [
+    {ic:"📄", title:"서류·돈", items:["신분증","카드"]},
+    {ic:"👕", title:"의류·신발", items:["입을 옷","여벌 옷","겉옷","잠옷","속옷","양말&스타킹","여분 신발","슬리퍼"]},
+    {ic:"🧴", title:"세면·미용·상비약", items:["세면도구","화장품","헤어 제품","면도기","머리집게","스킨케어","선크림","렌즈통&렌즈액","상비약","샤워타월"]},
+    {ic:"🔌", title:"전자기기", items:["핸드폰 충전기","보조배터리","워치충전기","담배충전기","노트북","셀카봉&셀카리모컨"]},
+    {ic:"🐈", title:"냥이(루·설) 집케어", items:["화장실 치우기","밥 챙기기","물 챙기기"]},
+    {ic:"🚪", title:"떠나기 전 집 단속", items:["문단속 하기"]},
+    {ic:"🧺", title:"기타", items:["빨래가방"]},
+    {ic:"🏊", title:"물놀이형(추가)", items:["수영복","아쿠아슈즈","핸드폰 방수팩","방수가방","수영복가방","큰 수건"]}
+  ];
+  var CHECK_KEY = "soop_test_v2_check";
+  var OWNER_KEY = "soop_test_v2_owner";
+  var checkState = JSON.parse(localStorage.getItem(CHECK_KEY) || "{}");
+  var ownerState = JSON.parse(localStorage.getItem(OWNER_KEY) || "{}");
+  var CHK = '<svg viewBox="0 0 24 24"><polyline points="5,13 10,18 19,6"/></svg>';
+  var OWNER_CYCLE = ["", "주인님", "여왕님", "공용"];
+  var OWNER_CLASS = {"주인님":"denim", "여왕님":"rose", "공용":"ochre"};
+  var OWNER_LABEL = {"":"담당?", "주인님":"👤 주인님", "여왕님":"👑 여왕님", "공용":"공용"};
+  var list = document.getElementById("list");
+  var total = 0;
+  DATA.forEach(function(g){ total += g.items.length; });
+  function itemId(gi, ii){ return gi + "_" + ii; }
+  window.render = function(){
+    var html = "";
+    DATA.forEach(function(g, gi){
+      var doneCount = 0;
+      g.items.forEach(function(t, ii){ if (checkState[itemId(gi, ii)]) doneCount++; });
+      html += '<div class="card">';
+      html += '<div class="card-head"><span class="card-title"><span class="ic">' + g.ic + '</span>' + g.title + '</span>' +
+              '<span class="card-count" data-cnt="' + gi + '">' + doneCount + '/' + g.items.length + '</span></div>';
+      g.items.forEach(function(t, ii){
+        var id = itemId(gi, ii);
+        var done = checkState[id] ? " done" : "";
+        var owner = ownerState[id] || "";
+        var oclass = OWNER_CLASS[owner] || "";
+        html += '<div class="item' + done + '" data-id="' + id + '">' +
+                '<button class="cbox-btn" data-role="check" aria-label="' + t + ' 완료 체크">' + CHK + '</button>' +
+                '<span class="label">' + t + '</span>' +
+                '<button class="owner-btn" data-role="owner" data-owner="' + oclass + '">' + OWNER_LABEL[owner] + '</button>' +
+                '</div>';
+      });
+      html += '</div>';
+    });
+    list.innerHTML = html;
+    updateProgress();
+  };
+  function updateProgress(){
+    var done = 0;
+    Object.keys(checkState).forEach(function(k){ if (checkState[k]) done++; });
+    document.getElementById("pcount").textContent = done + " / " + total + " 완료";
+    document.getElementById("pbar").style.width = (total ? (done / total * 100) : 0) + "%";
+    DATA.forEach(function(g, gi){
+      var c = 0;
+      g.items.forEach(function(t, ii){ if (checkState[itemId(gi, ii)]) c++; });
+      var el = document.querySelector('[data-cnt="' + gi + '"]');
+      if (el) el.textContent = c + "/" + g.items.length;
+    });
+  }
+  list.addEventListener("click", function(e){
+    var checkBtn = e.target.closest('[data-role="check"]');
+    var ownerBtn = e.target.closest('[data-role="owner"]');
+    var itemEl = e.target.closest(".item");
+    if (!itemEl) return;
+    var id = itemEl.dataset.id;
+    if (checkBtn){
+      checkState[id] = !checkState[id];
+      itemEl.classList.toggle("done", !!checkState[id]);
+      localStorage.setItem(CHECK_KEY, JSON.stringify(checkState));
+      updateProgress();
+    } else if (ownerBtn){
+      var cur = ownerState[id] || "";
+      var idx = OWNER_CYCLE.indexOf(cur);
+      var next = OWNER_CYCLE[(idx + 1) % OWNER_CYCLE.length];
+      ownerState[id] = next;
+      ownerBtn.textContent = OWNER_LABEL[next];
+      ownerBtn.dataset.owner = OWNER_CLASS[next] || "";
+      localStorage.setItem(OWNER_KEY, JSON.stringify(ownerState));
+    }
+  });
+  document.getElementById("resetBtn").addEventListener("click", function(){
+    checkState = {}; ownerState = {};
+    localStorage.setItem(CHECK_KEY, "{}");
+    localStorage.setItem(OWNER_KEY, "{}");
+    render();
+  });
+})();
+</script>
+</body>
+</html>
