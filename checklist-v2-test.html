@@ -131,7 +131,6 @@ async function tryPin(){
 }
 document.getElementById("go").addEventListener("click",tryPin);
 document.getElementById("pin").addEventListener("keydown",e=>{ if(e.key==="Enter") tryPin(); });
-try{ if(sessionStorage.getItem("soop_ok")==="1") unlock(); }catch(e){}
 
 (function(){
   var DATA = [
@@ -220,6 +219,8 @@ try{ if(sessionStorage.getItem("soop_ok")==="1") unlock(); }catch(e){}
     render();
   });
 })();
+
+try{ if(sessionStorage.getItem("soop_ok")==="1") unlock(); }catch(e){}
 </script>
 </body>
 </html>
